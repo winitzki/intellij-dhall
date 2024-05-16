@@ -1,7 +1,7 @@
 import ReleaseTransformations._
 
-intellijPluginName in ThisBuild := "intellij-dhall"
-intellijBuild in ThisBuild := "193.4778.7"
+ThisBuild / intellijPluginName := "intellij-dhall"
+ThisBuild / intellijBuild := "241.17011.2"
 
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
@@ -24,23 +24,22 @@ lazy val dhall = project
   .in(file("."))
   .enablePlugins(SbtIdeaPlugin)
   .settings(
-    scalaVersion := "2.13.1",
-    scalaSource in Compile := baseDirectory.value / "src" / "main" / "scala",
-    scalaSource in Test := baseDirectory.value / "src" / "test" / "scala",
+    scalaVersion := "2.13.14",
+    Compile / scalaSource := baseDirectory.value / "src" / "main" / "scala",
+    Test / scalaSource := baseDirectory.value / "src" / "test" / "scala",
     ideBasePackages := Seq("org.intellij.plugins.dhall"),
-    unmanagedSourceDirectories in Compile += baseDirectory.value / "gen",
-    resourceDirectory in Compile := baseDirectory.value / "resources",
+    Compile / unmanagedSourceDirectories += baseDirectory.value / "gen",
+    Compile / resourceDirectory := baseDirectory.value / "resources",
     packageMethod := PackagingMethod.Standalone(targetPath = s"lib/${name.value}-${(ThisBuild / version).value}.jar"),
 
     patchPluginXml := pluginXmlOptions { xml =>
       xml.version = (ThisBuild / version).value
       xml.sinceBuild = (ThisBuild / intellijBuild).value
     },
-    intellijExternalPlugins += IntellijPlugin
-      .Id("PsiViewer", Some("193-SNAPSHOT"), None),
+    //intellijRuntimePlugins += "idea.plugin.psiviewer".toPlugin, // Fails to download.
     libraryDependencies ++= Seq(
       "com.novocode" % "junit-interface" % "0.11" % Test
     )
   )
 
-lazy val runner = createRunnerProject(dhall, "dhall-runner")
+//lazy val runner = createRunnerProject(dhall)
