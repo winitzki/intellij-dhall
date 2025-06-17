@@ -1,7 +1,10 @@
 import ReleaseTransformations._
 
 ThisBuild / intellijPluginName := "intellij-dhall"
-ThisBuild / intellijBuild := "241.17011.2"
+
+// Choose the version by searching for "idea-community-build-zip"
+// in https://www.jetbrains.com/intellij-repository/releases
+ThisBuild / intellijBuild := "251.23774.435" //"2025.1" //"251.26094.121"
 
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
